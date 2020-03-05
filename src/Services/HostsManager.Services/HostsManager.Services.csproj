@@ -11,9 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ConfigurationFiles\appsettings - Copy.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="ConfigurationFiles\appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -32,18 +32,21 @@ namespace HostsManager.Application.WPF
 
         private void LoadProfiles()
         {
-            var labels = new List<Label>();
-            foreach (var configuration in _service.GetConfigurations().Profiles)
+
+            foreach (var profile in _service.GetConfigurations().Profiles)
             {
-                labels.Add(new Label
+                GActiveProfiles.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                var text = new TextBlock
                 {
-                    Content = configuration.Key
-                });
-            }
+                    Text = profile.Key,
+                    FontSize = 20
 
-
-            //SVProfiles = new ScrollViewer();
-            SVProfiles.Content = labels;
+                };
+                Grid.SetColumn(text, 0);
+                Grid.SetRow(text, GActiveProfiles.RowDefinitions.Count - 1);
+                GActiveProfiles.Children.Add(text);
+            }          
+   
         }
     }
 }
