@@ -1,5 +1,5 @@
 ﻿using System;
-using HostsManager.Application;
+using HostsManager.Services;
 
 namespace HostManager.ConsoleApplication
 {

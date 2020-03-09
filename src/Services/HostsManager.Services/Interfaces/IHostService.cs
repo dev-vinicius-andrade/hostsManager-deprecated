@@ -7,7 +7,6 @@ namespace HostsManager.Application.Interfaces
     {
         IReadOnlyList<Hosts> DefaultHosts();
         void RollbackHostsFile();
-        void CreateNewHostsFile();
         void SetProfile(string profileName, Profile profile);
     }
 }

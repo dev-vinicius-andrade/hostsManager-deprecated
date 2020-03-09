@@ -7,10 +7,18 @@ namespace HostsManager.Application.Entities
     {
         public Profile()
         {
-            Status = false;
+            Active = false;
             Hosts = new List<Hosts>();
         }
-        protected bool Status { get; set; }
         public List<Hosts> Hosts { get; set; }
+        public bool Active { get; set; }
+
+        //public string Name { get; private set; }
+        //public void SetName(string name)
+        //{
+        //    if (!string.IsNullOrEmpty(name))
+        //        Name = name;
+        //}
+
     }
 }

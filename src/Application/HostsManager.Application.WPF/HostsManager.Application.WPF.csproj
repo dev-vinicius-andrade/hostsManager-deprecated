@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\Services\HostsManager.Services\HostsManager.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Assets\" />
+  </ItemGroup>
+
 </Project>
