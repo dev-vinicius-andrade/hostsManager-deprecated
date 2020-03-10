@@ -1,5 +1,4 @@
-﻿using System;
-using HostsManager.Services;
+﻿using HostsManager.Services;
 
 namespace HostManager.ConsoleApplication
 {
@@ -7,7 +6,7 @@ namespace HostManager.ConsoleApplication
     {
         static void Main(string[] args)
         {
-            new ConfigurationsService().Teste();
+            
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Generic;
 
-namespace HostsManager.Application.Entities
+namespace HostsManager.Services.Entities
 {
     public class Profile
     {
@@ -12,13 +12,5 @@ namespace HostsManager.Application.Entities
         }
         public List<Hosts> Hosts { get; set; }
         public bool Active { get; set; }
-
-        //public string Name { get; private set; }
-        //public void SetName(string name)
-        //{
-        //    if (!string.IsNullOrEmpty(name))
-        //        Name = name;
-        //}
-
     }
 }

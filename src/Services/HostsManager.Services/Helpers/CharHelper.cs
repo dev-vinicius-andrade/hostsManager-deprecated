@@ -1,4 +1,4 @@
-﻿namespace HostsManager.Application.Helpers
+﻿namespace HostsManager.Services.Helpers
 {
     internal static class CharHelper
     {

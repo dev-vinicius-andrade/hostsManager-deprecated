@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using HostsManager.Application.Entities;
+using HostsManager.Services.Entities;
 
-namespace HostsManager.Application.Configuration
+namespace HostsManager.Services.Configuration
 {
     public class Configurations
     {
-        private Dictionary<string, Profile> profiles;
-
         public Configurations()
         {
             HostsFileFolder = string.Empty;
@@ -17,9 +15,6 @@ namespace HostsManager.Application.Configuration
         public string HostsFileFolder { get; set; }
         public List<Hosts> DefaultHosts { get; set; }
 
-        public Dictionary<string, Profile> Profiles
-        {
-            get;set;
-        }
+        public Dictionary<string, Profile> Profiles { get; set; }
     }
 }

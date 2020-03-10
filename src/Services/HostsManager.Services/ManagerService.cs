@@ -1,16 +1,19 @@
-﻿using HostsManager.Application.Configuration;
-using HostsManager.Application.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using HostsManager.Services.Configuration;
+using HostsManager.Services.Entities;
+using HostsManager.Services.Handlers;
+using HostsManager.Services.Helpers;
+using HostsManager.Services.Interfaces;
 
 namespace HostsManager.Services
 {
-    public class ManagerServices
+    public class ManagerService : IManagerService
     {
         private readonly Configurations _configurations;
-        public ManagerServices()
+        public ManagerService()
         {
             _configurations = GetConfigurations();
             AddDefaultConfiguration();
@@ -18,15 +21,18 @@ namespace HostsManager.Services
 
         private void AddDefaultConfiguration()
         {
-            var defaultConfiguration = GetDefaultConfiguration();
-            
-            _configurations.Profiles.Add(defaultConfiguration.Key, defaultConfiguration.Value);
+            if (_configurations == null)
+                return;
+
+            var (key, value) = GetDefaultConfiguration();
+            _configurations.Profiles.Add(key, value);
+
         }
         private Configurations GetConfigurations()
         {
             try
             {
-                var service = new ConfigurationsService();
+                var service = new ConfigurationsHandler();
                 var configurations = service.GetConfigurations();
 
                 return configurations;
@@ -40,13 +46,11 @@ namespace HostsManager.Services
         public KeyValuePair<string, Profile> GetActiveProfile()
         {
 
-            var activesProfile = _configurations.Profiles.Where(p => p.Value.Active);
+            var activesProfile = _configurations.Profiles.Where(p => p.Value.Active).ToList();
             if (!activesProfile.Any())
             {
                 var hostService = BuildHostService();
-                var activeProfileName = hostService.GetActiveProfileName();
-                if (activeProfileName == null)
-                    activeProfileName = Constants.DEFAULT_PROFILE_NAME;
+                var activeProfileName = hostService.GetActiveProfileName() ?? Constants.DefaultProfileName;
                 _configurations.Profiles[activeProfileName].Active = true;
                 return GetActiveProfile();
             }
@@ -59,11 +63,7 @@ namespace HostsManager.Services
 
         public Dictionary<string, Profile> GetProfiles()
         {
-            var profiles = new Dictionary<string, Profile>();
-            foreach (var profile in _configurations.Profiles)
-                profiles.Add(profile.Key, profile.Value);
-            return profiles;
-
+            return _configurations.Profiles;
         }
 
         public KeyValuePair<string, Profile> GetDefaultConfiguration()
@@ -71,7 +71,7 @@ namespace HostsManager.Services
             var hostService = BuildHostService();
             var defaultHosts = hostService.DefaultHosts();
             return new KeyValuePair<string, Profile>(
-                key: Constants.DEFAULT_PROFILE_NAME,
+                key: Constants.DefaultProfileName,
                 value: new Profile { Hosts = defaultHosts.ToList() });
         }
 
@@ -82,17 +82,15 @@ namespace HostsManager.Services
             if (!_configurations.Profiles.ContainsKey(profileName))
                 throw new Exception($"Profile name: {profileName} does not exists");
 
-            
+
             _configurations.Profiles[activeProfile.Key].Active = false;
             _configurations.Profiles[profileName].Active = true;
             hostService.SetProfile(profileName, _configurations.Profiles[profileName]);
         }
-        private HostServices BuildHostService()
+        private HostHandler BuildHostService()
         {
-            var hostsFileFoder = new DirectoryInfo(_configurations.HostsFileFolder);
-            if (!hostsFileFoder.Exists)
-                throw new Exception($"Invalid Hosts File Folder, please check your configuration. {_configurations.HostsFileFolder}");
-            return new HostServices(hostsFileFoder);
+            
+            return new HostHandler(_configurations.HostsFileFolder);
         }
     }
 }

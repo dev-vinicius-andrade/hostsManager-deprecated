@@ -1,4 +1,4 @@
-﻿namespace HostsManager.Application.Entities
+﻿namespace HostsManager.Services.Entities
 {
     public class Hosts
     {

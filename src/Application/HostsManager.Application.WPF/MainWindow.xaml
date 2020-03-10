@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HostsManager.Application.WPF"
+        
         mc:Ignorable="d"
-        Title="HostsManager" Height="450" Width="300
-        " Background="#FF323130" WindowStyle="SingleBorderWindow" AllowsTransparency="False" ResizeMode="NoResize" >
+        Background="White"
+        Title="HostsManager" Height="450" Width="300"
+         WindowStyle="SingleBorderWindow" AllowsTransparency="False" ResizeMode="NoResize" >
 
 
 
@@ -28,7 +30,7 @@
                 <RowDefinition Height="auto" ></RowDefinition>
             </Grid.RowDefinitions>
             <!--<TextBlock Grid.Row="0" Text="Active Profile:" Foreground="White" FontWeight="Bold"></TextBlock>-->
-            <Border Grid.Row="1" BorderThickness="0.1"  BorderBrush="Black" Width="auto"/>
+            <Border Grid.Row="0" BorderThickness="0.1"  BorderBrush="White" Width="auto"/>
 
         </Grid>
         <ScrollViewer Grid.Row="1" Grid.Column="0"  VerticalScrollBarVisibility="Hidden"   >

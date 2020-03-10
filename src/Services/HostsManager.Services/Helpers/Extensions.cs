@@ -1,11 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-
 using System.Linq;
 
-
-namespace HostsManager.Application.Helpers
+namespace HostsManager.Services.Helpers
 {
     internal static class Extensions
     {

@@ -7,11 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Services\HostsManager.Services\HostsManager.Services.csproj" />
+    <Compile Remove="Assets\**" />
+    <EmbeddedResource Remove="Assets\**" />
+    <None Remove="Assets\**" />
+    <Page Remove="Assets\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\" />
+    <ProjectReference Include="..\..\Services\HostsManager.Services\HostsManager.Services.csproj" />
   </ItemGroup>
 
 </Project>

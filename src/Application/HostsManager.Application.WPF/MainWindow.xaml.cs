@@ -1,42 +1,31 @@
-﻿using HostsManager.Application.Entities;
-using HostsManager.Application.Helpers;
-using HostsManager.Application.WPF.Helpers;
-using HostsManager.Services;
-using System;
+﻿using HostsManager.Application.WPF.Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using HostsManager.Services.Entities;
+using HostsManager.Services.Interfaces;
 
 
 namespace HostsManager.Application.WPF
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        private ManagerServices _managerService;
+        private readonly IManagerService _managerService;
 
-        public MainWindow()
+        public MainWindow(IManagerService managerService)
         {
-            _managerService = new ManagerServices();
+             _managerService = managerService;
             Initialize();
         }
         public void Initialize()
         {
+            
             InitializeComponent();
             LoadActiveProfile();
             LoadProfiles();
+            Background = new SolidColorBrush(Constants.COLOR_BACKGROUND.ToHexadecimalColor());
         }
 
 
@@ -53,7 +42,7 @@ namespace HostsManager.Application.WPF
             var profilesLabel = new TextBlock
             {
                 Text = "Profiles:",
-                Foreground = new SolidColorBrush("FFFFFF".ToHexadecimalColor()),
+                Foreground = new SolidColorBrush(Constants.COLOR_WHITE.ToHexadecimalColor()),
                 FontWeight = FontWeights.Bold
             };
             Grid.SetColumn(profilesLabel, 0);
@@ -74,7 +63,7 @@ namespace HostsManager.Application.WPF
                         Margin = new Thickness(0),
                         Text = profile.Key,
                         FontSize = 16,
-                        Foreground = new SolidColorBrush("FFFFFF".ToHexadecimalColor())
+                        Foreground = new SolidColorBrush(Constants.COLOR_WHITE.ToHexadecimalColor())
 
                     }
                 };
@@ -85,12 +74,11 @@ namespace HostsManager.Application.WPF
                     {
                         Text = $"{host.Ip}  {host.Host}",
                         FontSize = 14,
-                        Foreground = new SolidColorBrush("FFFFFF".ToHexadecimalColor())
+                        Foreground = new SolidColorBrush(Constants.COLOR_WHITE.ToHexadecimalColor())
 
                     });
 
-                var activateButton = new Button();
-                activateButton.Tag = profile;
+                var activateButton = new Button {Tag = profile};
                 activateButton.Click += ActivateButton_Click;
                 activateButton.Content = new TextBlock { Text = "Activate" };
                 stackPanel.Children.Add(activateButton);
@@ -122,7 +110,7 @@ namespace HostsManager.Application.WPF
             var activeProfileLabel = new TextBlock
             {
                 Text = "Active Profile:",
-                Foreground = new SolidColorBrush("FFFFFF".ToHexadecimalColor()),
+                Foreground = new SolidColorBrush(Constants.COLOR_WHITE.ToHexadecimalColor()),
                 FontWeight = FontWeights.Bold
             };
             Grid.SetColumn(activeProfileLabel, 0);
@@ -135,14 +123,14 @@ namespace HostsManager.Application.WPF
                 HorizontalAlignment = HorizontalAlignment.Left,
                 FlowDirection = FlowDirection.RightToLeft,
                 Width = GMainGrid.Width - 15,
-                Background = new SolidColorBrush("64dd17".ToHexadecimalColor()),
+                Background = new SolidColorBrush(Constants.COLOR_GREEN.ToHexadecimalColor()),
                 Header = new TextBlock
                 {
                     TextAlignment = TextAlignment.Left,
                     Margin = new Thickness(0),
                     Text = profile.Key,
                     FontSize = 16,
-                    Foreground = new SolidColorBrush("000000".ToHexadecimalColor())
+                    Foreground = new SolidColorBrush(Constants.COLOR_BLACK.ToHexadecimalColor())
 
                 }
             };
@@ -153,7 +141,7 @@ namespace HostsManager.Application.WPF
                 {
                     Text = $"{host.Ip}  {host.Host}",
                     FontSize = 14,
-                    Foreground = new SolidColorBrush("000000".ToHexadecimalColor())
+                    Foreground = new SolidColorBrush(Constants.COLOR_BLACK.ToHexadecimalColor())
 
                 });
 
