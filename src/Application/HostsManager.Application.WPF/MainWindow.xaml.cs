@@ -43,7 +43,8 @@ namespace HostsManager.Application.WPF
             {
                 Text = "Profiles:",
                 Foreground = new SolidColorBrush(Constants.COLOR_WHITE.ToHexadecimalColor()),
-                FontWeight = FontWeights.Bold
+                FontWeight = FontWeights.Bold,
+                FontSize = 24
             };
             Grid.SetColumn(profilesLabel, 0);
             Grid.SetRow(profilesLabel, 1);
@@ -56,7 +57,7 @@ namespace HostsManager.Application.WPF
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     FlowDirection = FlowDirection.RightToLeft,
-                    Width = GMainGrid.Width - 15,
+                    Width = GProfiles.Width,
                     Header = new TextBlock
                     {
                         TextAlignment = TextAlignment.Left,
@@ -111,7 +112,8 @@ namespace HostsManager.Application.WPF
             {
                 Text = "Active Profile:",
                 Foreground = new SolidColorBrush(Constants.COLOR_WHITE.ToHexadecimalColor()),
-                FontWeight = FontWeights.Bold
+                FontWeight = FontWeights.Bold,
+                FontSize = 24
             };
             Grid.SetColumn(activeProfileLabel, 0);
             Grid.SetRow(activeProfileLabel, 0);
@@ -122,7 +124,7 @@ namespace HostsManager.Application.WPF
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 FlowDirection = FlowDirection.RightToLeft,
-                Width = GMainGrid.Width - 15,
+                Width = GActiveProfile.Width ,
                 Background = new SolidColorBrush(Constants.COLOR_GREEN.ToHexadecimalColor()),
                 Header = new TextBlock
                 {

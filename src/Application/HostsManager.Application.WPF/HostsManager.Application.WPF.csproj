@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Remove="Assets\icon.ico" />
+    <None Remove="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +25,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Services\HostsManager.Services\HostsManager.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icon.ico" />
   </ItemGroup>
 
 </Project>

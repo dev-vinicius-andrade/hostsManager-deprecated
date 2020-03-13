@@ -18,7 +18,6 @@ namespace HostsManager.Application.WPF.Controller
                 }
             };
         }
-
         private ToolStripButton ConfigureExitButton()
         {
             var button = new ToolStripButton("Exit");
@@ -26,8 +25,6 @@ namespace HostsManager.Application.WPF.Controller
             return button;
         }
 
-        
-        
         public void Dispose()
         {
             ContextMenuStrip.Dispose();
