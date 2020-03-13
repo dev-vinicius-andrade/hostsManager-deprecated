@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostsManager.Services", "Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostManager.ConsoleApplication", "Application\HostManager.ConsoleApplication\HostManager.ConsoleApplication.csproj", "{B50E729C-6F09-47AF-91B9-54B485180248}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostsManager.Application.WPF", "Application\HostsManager.Application.WPF\HostsManager.Application.WPF.csproj", "{193A7646-7F6D-467A-B27C-44744C165045}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostsManager.Application.WPF", "Application\HostsManager.Application.WPF\HostsManager.Application.WPF.csproj", "{193A7646-7F6D-467A-B27C-44744C165045}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Library", "3.Library", "{9BD851EB-2729-4E62-BB59-F6D70FFF96EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

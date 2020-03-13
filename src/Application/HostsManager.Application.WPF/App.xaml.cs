@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using HostsManager.Services;
+using HostsManager.Application.WPF.Controller;
 using HostsManager.Services.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,9 +9,16 @@ namespace HostsManager.Application.WPF
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : System.Windows.Application
+    public partial class App :IDisposable
     {
+        private readonly IconTrayController _iconTrayController;
 
+
+        public App()
+        {
+            _iconTrayController = new IconTrayController(this);
+        }
+        
         public IServiceProvider ServiceProvider { get; private set; }
 
         private void ConfigureServices(IServiceCollection services)
@@ -26,9 +33,13 @@ namespace HostsManager.Application.WPF
             ConfigureServices(serviceCollection);
 
             ServiceProvider = serviceCollection.BuildServiceProvider();
-
             var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
-            mainWindow.Show();
+            if (OsHelper.IsWindows())
+                _iconTrayController.Configure(mainWindow);
+        }
+        public void Dispose()
+        {
+            MainWindow?.Close();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace HostsManager.Services.Helpers
 {
-    internal static class OsHelper
+    public static class OsHelper
     {
         private static readonly PlatformID Platform = Environment.OSVersion.Platform;
         public static bool IsWindows() 

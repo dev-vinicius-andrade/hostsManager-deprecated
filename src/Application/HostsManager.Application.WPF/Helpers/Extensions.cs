@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using System.Windows;
+using System.Windows.Forms;
 
 namespace HostsManager.Application.WPF.Helpers
 {
@@ -10,6 +12,5 @@ namespace HostsManager.Application.WPF.Helpers
             return System.Windows.Media.Color.FromArgb(colorConverted.A, colorConverted.R, colorConverted.G, colorConverted.B);
         }
         public static string FormatHexadecimalColor(this string color) => color.StartsWith("#") ? color : $"#{color}";
-
     }
 }
