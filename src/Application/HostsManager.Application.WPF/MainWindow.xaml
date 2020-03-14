@@ -22,7 +22,7 @@
             <RowDefinition  Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Margin="0 0 0 0"  Grid.Row="0" Grid.Column="0" Name="GActiveProfile">
+        <Grid Margin="0 0 0 0"  Width="290" Grid.Row="0" Grid.Column="0" Name="GActiveProfile">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -32,7 +32,7 @@
             <Border Grid.Row="0" Grid.Column="0"  BorderThickness="0.5"  BorderBrush="#cccccc" Width="auto"/>
 
         </Grid>
-        <ScrollViewer Grid.Row="1" Grid.Column="0"  VerticalScrollBarVisibility="Hidden"   >
+        <ScrollViewer Width="290" Grid.Row="1" Grid.Column="0"  VerticalScrollBarVisibility="Hidden"   >
             <Grid   Name="GProfiles"  ScrollViewer.CanContentScroll="True" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
