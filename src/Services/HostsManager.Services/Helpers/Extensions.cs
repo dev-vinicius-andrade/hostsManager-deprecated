@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace HostsManager.Services.Helpers
 {
-    internal static class Extensions
+    public static class Extensions
     {
 
         public static List<string> SplitByEmptySpace(this string text)
@@ -25,6 +26,12 @@ namespace HostsManager.Services.Helpers
         public static SortedDictionary<T1, T2> ToSortedDictionary<T1, T2>(this IEnumerable<T2> source, Func<T2, T1> keySelector)
         {
             return new SortedDictionary<T1, T2>(source.ToDictionary(keySelector));
+        }
+
+
+        public static string ToJsonObject(this object obj)
+        {
+            return JsonSerializer.Serialize(obj, new JsonSerializerOptions{WriteIndented = true});
         }
 
     }

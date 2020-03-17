@@ -12,7 +12,7 @@
         {
           "Ip": "127.0.0.1",
           "Host": "localhost",
-          "Active": true 
+          "Active": true
         },
         {
           "Ip": "::1",

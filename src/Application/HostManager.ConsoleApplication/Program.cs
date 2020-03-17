@@ -1,6 +1,4 @@
-﻿using HostsManager.Services;
-
-namespace HostManager.ConsoleApplication
+﻿namespace HostManager.ConsoleApplication
 {
     class Program
     {

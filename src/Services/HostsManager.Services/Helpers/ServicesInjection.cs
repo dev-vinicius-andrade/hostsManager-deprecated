@@ -1,17 +1,23 @@
-﻿using HostsManager.Services.Interfaces;
+﻿using HostsManager.Services.Configuration;
+using HostsManager.Services.Handlers;
+using HostsManager.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 namespace HostsManager.Services.Helpers
 {
     public static class ServicesInjection
     {
 
-        public static IServiceCollection AddManagerService(this IServiceCollection services)
+        public static IConfiguration AddManagerService(this IServiceCollection services)
         {
-            services.InjectService<IManagerService,ManagerService>(ServiceLifetime.Singleton);
-            return services;
-        }
 
+            var configurationsHandler = new ConfigurationsHandler();
+            services.Configure<HostsConfigurations>(configurationsHandler.Configuration, options => configurationsHandler.GetConfigurations());
+            services
+                .InjectService(configurationsHandler)
+                .InjectService<IManagerService, ManagerService>(ServiceLifetime.Transient);
+            return configurationsHandler.Configuration;
+        }
         private static IServiceCollection InjectService<TService>(this IServiceCollection services,
             ServiceLifetime lifetime = ServiceLifetime.Scoped) where TService : class
         {

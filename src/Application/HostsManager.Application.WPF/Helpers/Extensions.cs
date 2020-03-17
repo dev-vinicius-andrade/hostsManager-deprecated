@@ -1,7 +1,8 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 
 namespace HostsManager.Application.WPF.Helpers
 {
@@ -18,6 +19,17 @@ namespace HostsManager.Application.WPF.Helpers
             Grid.SetColumn(element, column);
             Grid.SetRow(element, row);
             grid.Children.Add(element);
-        }    
+        }
+        public static Dictionary<string, TValue> ConvertToCaseInSensitive<TValue>(this Dictionary<string, TValue> dictionary)
+        {
+            var resultDictionary = new Dictionary<string, TValue>(StringComparer.InvariantCultureIgnoreCase);
+            foreach (var (key, value) in dictionary)
+            {
+                resultDictionary.Add(key, value);
+            }
+
+            dictionary = resultDictionary;
+            return dictionary;
+        }
     }
 }

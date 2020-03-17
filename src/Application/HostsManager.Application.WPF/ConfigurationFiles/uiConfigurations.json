@@ -1,0 +1,52 @@
+{
+  "MainWindowConfigurations": {
+    "Width": 300,
+    "Height": 450,
+    "BackgroundColor": "DarkGray"
+  },
+  "ProfileWindowConfigurations": {
+    "Width": 300,
+    "Height": 480,
+    "BackgroundColor": "DarkGray",
+    "HeaderConfiguration": {
+      "Height": 20,
+      "FontSize": 16,
+      "FontColor": "White"
+    },
+    "TextBoxConfiguration": {
+      "Height": 400,
+      "FontSize": 16,
+      "BackgroundColor": "DarkGray",
+      "FontColor": "White"
+    },
+    "SaveButtonConfiguration": {
+      "Height": 30,
+      "Width": 50,
+      "FontSize": 15,
+      "FontColor": "Black",
+      "BackgroundColor": "Gray"
+    },
+    "CancelButtonConfiguration": {
+      "Height": 30,
+      "Width": 50,
+      "FontSize": 15,
+      "FontColor": "White",
+      "BackgroundColor": "Red"
+    }
+  },
+  "ThemeConfiguration": {
+    "Default": {
+      "Active": true,
+      "ColorsConfigurations": {
+        "White": "#FFFFFF",
+        "Black": "#000000",
+        "DarkGray": "#323130",
+        "Green": "#64DD17",
+        "Gray": "#CCCCCC",
+        "Red": "#C62828"
+      }
+
+    }
+  } 
+
+}

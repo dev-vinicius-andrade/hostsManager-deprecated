@@ -3,9 +3,9 @@ using HostsManager.Services.Entities;
 
 namespace HostsManager.Services.Configuration
 {
-    public class Configurations
+    public class HostsConfigurations
     {
-        public Configurations()
+        public HostsConfigurations()
         {
             HostsFileFolder = string.Empty;
             DefaultHosts = new List<Hosts>();

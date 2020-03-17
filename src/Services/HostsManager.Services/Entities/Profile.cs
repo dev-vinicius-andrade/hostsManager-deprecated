@@ -12,5 +12,6 @@ namespace HostsManager.Services.Entities
         }
         public List<Hosts> Hosts { get; set; }
         public bool Active { get; set; }
+
     }
 }

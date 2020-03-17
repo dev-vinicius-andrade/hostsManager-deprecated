@@ -4,15 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HostsManager.Application.WPF"
-        
         mc:Ignorable="d"
         Background="Black"
-        Title="HostsManager" Height="450" Width="300" BorderThickness="0.5" BorderBrush="#cccccc"
-         WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="Manual" ShowInTaskbar="False" Icon="icon.ico" >
-
-
-
-
+        Title="HostsManager" MinHeight="450" MinWidth="300" BorderThickness="0.5" BorderBrush="#cccccc"
+         WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="Manual" ShowInTaskbar="False" Icon="icon.ico" Deactivated="MainWindow_OnDeactivated" >
     <Grid Name="GMainGrid"  Width="300" Height="auto" Margin="5 5 5 5" VerticalAlignment="Top" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="290"/>

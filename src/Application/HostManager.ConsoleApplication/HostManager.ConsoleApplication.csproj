@@ -9,4 +9,10 @@
     <ProjectReference Include="..\..\Services\HostsManager.Services\HostsManager.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ConfigurationFiles\hostsConfigurations.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

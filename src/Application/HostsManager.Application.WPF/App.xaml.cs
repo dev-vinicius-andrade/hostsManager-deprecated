@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows;
+using HostsManager.Application.WPF.Configuration;
 using HostsManager.Application.WPF.Controller;
 using HostsManager.Services.Helpers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HostsManager.Application.WPF
@@ -12,10 +14,11 @@ namespace HostsManager.Application.WPF
     public partial class App :IDisposable
     {
         private readonly IconTrayController _iconTrayController;
-
-
         public App()
         {
+            var serviceCollection = new ServiceCollection();
+            ConfigureServices(serviceCollection);
+            ServiceProvider = serviceCollection.BuildServiceProvider();
             _iconTrayController = new IconTrayController(this);
         }
         
@@ -23,17 +26,19 @@ namespace HostsManager.Application.WPF
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddManagerService();
-            services.AddSingleton<MainWindow>();
+            var configuration =  services.AddManagerService();
+            var uiConfigurations = configuration.Get<UiConfigurations>();
+            services.AddSingleton(uiConfigurations.ThemeConfiguration);
+            services.AddSingleton(uiConfigurations.MainWindowConfigurations);
+            services.AddSingleton(uiConfigurations.ProfileWindowConfigurations);
+            services.AddSingleton<ThemeController>();
+            services.AddTransient<MainWindow>();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
-            var serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
 
-            ServiceProvider = serviceCollection.BuildServiceProvider();
-            var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+            var mainWindow = ServiceProvider.GetService<MainWindow>();
             if (OsHelper.IsWindows())
                 _iconTrayController.Configure(mainWindow);
         }
