@@ -9,6 +9,7 @@ using HostsManager.Application.WPF.Controller;
 using HostsManager.Application.WPF.Helpers;
 using HostsManager.Services.Entities;
 using HostsManager.Services.Helpers;
+using HostsManager.Services.Interfaces;
 
 namespace HostsManager.Application.WPF
 {
@@ -17,6 +18,7 @@ namespace HostsManager.Application.WPF
     /// </summary>
     public partial class ProfileWindow : Window, IDisposable
     {
+        private readonly IManagerService _managerService;
         private readonly KeyValuePair<string, Profile> _profile;
         private readonly ProfileWindowConfigurations _profileWindowConfigurations;
         private readonly ThemeController _themeController;
@@ -25,8 +27,9 @@ namespace HostsManager.Application.WPF
         private Button _saveButton;
         private Button _cancelButton;
 
-        public ProfileWindow(KeyValuePair<string, Profile> profile, ProfileWindowConfigurations profileWindowConfigurations, ThemeController themeController)
+        public ProfileWindow(IManagerService managerService, KeyValuePair<string, Profile> profile, ProfileWindowConfigurations profileWindowConfigurations, ThemeController themeController)
         {
+            _managerService = managerService;
             _profile = profile;
             _profileWindowConfigurations = profileWindowConfigurations;
             _themeController = themeController;
@@ -92,13 +95,16 @@ namespace HostsManager.Application.WPF
                 value: JsonSerializer.Deserialize<Profile>(_profileEditorTextBox.Text)
             );
 
-            if (JsonSerializer.Serialize(_profile).Equals(JsonSerializer.Serialize(editedProfile), StringComparison.InvariantCultureIgnoreCase))
-                this.Close();
+            if (_profile.Equals(editedProfile))
+                Close();
+
+            if(_managerService.SaveProfile(editedProfile.Key, editedProfile.Value))
+                Close();
 
         }
         private void CancelButtonOnClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private TextBox CreateAndLoadEditTextBox()
@@ -120,7 +126,6 @@ namespace HostsManager.Application.WPF
 
         private TextBlock CreateHeader()
         {
-
             var headerTextBlock = new TextBlock
             {
                 Text = $"Profile: [{_profile.Key}]",

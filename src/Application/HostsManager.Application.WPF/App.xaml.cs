@@ -23,7 +23,6 @@ namespace HostsManager.Application.WPF
         }
         
         public IServiceProvider ServiceProvider { get; private set; }
-
         private void ConfigureServices(IServiceCollection services)
         {
             var configuration =  services.AddManagerService();

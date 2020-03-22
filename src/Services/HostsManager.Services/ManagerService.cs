@@ -10,8 +10,10 @@ using Microsoft.Extensions.Options;
 
 namespace HostsManager.Services
 {
+   
     public class ManagerService : IManagerService
     {
+        public event EventHandler ConfigurationsChanged;
         private  HostsConfigurations _hostsConfigurations;
         public ManagerService(IOptionsMonitor<HostsConfigurations> configurations)
         {
@@ -27,6 +29,7 @@ namespace HostsManager.Services
             {
                 _hostsConfigurations = updatedConfiguration;
                 AddDefaultConfiguration();
+                NotifyConfigurationsChanged();
             });
         }
 
@@ -62,7 +65,7 @@ namespace HostsManager.Services
         public Dictionary<string, Profile> GetProfiles()
         {
             return _hostsConfigurations.Profiles;
-        }
+        } 
 
         public KeyValuePair<string, Profile> GetDefaultConfiguration()
         {
@@ -85,9 +88,24 @@ namespace HostsManager.Services
             _hostsConfigurations.Profiles[profileName].Active = true;
             hostService.SetProfile(profileName, _hostsConfigurations.Profiles[profileName]);
         }
+
+        public bool SaveProfile(string profileName, Profile profile)
+        {
+            if (!_hostsConfigurations.Profiles.ContainsKey(profileName))
+                throw new Exception($"Profile name: {profileName} does not exists");
+            _hostsConfigurations.Profiles[profileName] = profile;
+            NotifyConfigurationsChanged();
+            return true;
+        }
+
         private HostHandler BuildHostService()
         {
             return new HostHandler(_hostsConfigurations.HostsFileFolder);
+        }
+
+        private void NotifyConfigurationsChanged()
+        {
+            if (ConfigurationsChanged != null) ConfigurationsChanged.Invoke(this, null);
         }
     }
 }

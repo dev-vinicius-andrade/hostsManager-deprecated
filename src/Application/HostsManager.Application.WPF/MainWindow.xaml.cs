@@ -23,26 +23,32 @@ namespace HostsManager.Application.WPF
 
         public MainWindow(IManagerService managerService, ThemeController themeController, MainWindowConfigurations mainWindowConfigurations, ProfileWindowConfigurations profileWindowConfigurations)
         {
+
             _managerService = managerService;
             _themeController = themeController;
             _mainWindowConfigurations = mainWindowConfigurations;
             _profileWindowConfigurations = profileWindowConfigurations;
+            _managerService.ConfigurationsChanged += ManagerServiceOnConfigurationsChanged;
+            InitializeComponent();
             Initialize();
         }
+
+        private void ManagerServiceOnConfigurationsChanged(object sender, EventArgs e) => Initialize();
         public void Initialize()
         {
-
-            InitializeComponent();
+            Width = _mainWindowConfigurations.Width;
+            Height = _mainWindowConfigurations.Height;
+            Background = new SolidColorBrush(_themeController.GetColor(_mainWindowConfigurations.BackgroundColor));
             LoadActiveProfile();
             LoadProfiles();
-            Background = new SolidColorBrush(Helpers.Colors.BACKGROUND.ToHexadecimalColor());
         }
 
 
         private void LoadProfiles()
         {
+            GProfiles.Width = Width - (GMainGrid.Margin.Left + GMainGrid.Margin.Right);
             GProfiles.Children.Clear();
-            var profiles = _managerService.GetProfiles().OrderBy(p => p.Key);
+            var profiles = _managerService.GetProfiles().OrderBy(p => p.Key).ToList();
 
             if (!profiles.Any())
             {
@@ -58,29 +64,28 @@ namespace HostsManager.Application.WPF
             {
                 var expander = ElementsBuilders.BuildExpander(width: GProfiles.Width,
                     element: ElementsBuilders.BuildTextBlock(profile.Key, Helpers.Colors.WHITE, FontWeights.SemiBold, 16));
-                var stackPanel = new StackPanel { FlowDirection = FlowDirection.LeftToRight };
-                var editButton = new Button { Tag = profile };
-                var activateButton = new Button { Tag = profile };
+                var dockPanel = new DockPanel { FlowDirection = FlowDirection.LeftToRight, HorizontalAlignment = HorizontalAlignment.Left, Width = expander.Width};
+                var editButton = new Button { Tag = profile , Width = expander.Width/2, HorizontalAlignment = HorizontalAlignment.Left};
+                var activateButton = new Button { Tag = profile, Width = expander.Width / 2, HorizontalAlignment = HorizontalAlignment.Left };
 
-                editButton.Content = new TextBlock { Text = "Edit" };
+                editButton.Content = new TextBlock { Text = "Edit" ,};
                 editButton.Click += EditButtonOnClick;
                 activateButton.Click += ActivateButton_Click;
                 activateButton.Content = new TextBlock { Text = "Activate" };
-                stackPanel.Children.Add(editButton);
-                stackPanel.Children.Add(activateButton);
+                dockPanel.Children.Add(editButton);
+                dockPanel.Children.Add(activateButton);
 
-                expander.Content = stackPanel;
+                expander.Content = dockPanel;
                 GProfiles.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                 GProfiles.AddElement(expander, 0, GProfiles.RowDefinitions.Count - 1);
             }
 
         }
-
         private void EditButtonOnClick(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender;
             var profile = (KeyValuePair<string, Profile>)button.Tag;
-            var profileWindow = new ProfileWindow(profile, _profileWindowConfigurations, _themeController);
+            var profileWindow = new ProfileWindow(_managerService, profile, _profileWindowConfigurations, _themeController);
             this.Hide();
             profileWindow.ShowDialog();
             this.Show();
@@ -111,14 +116,9 @@ namespace HostsManager.Application.WPF
 
         private void LoadActiveProfile()
         {
-
+            GActiveProfile.Width = Width - (GMainGrid.Margin.Left + GMainGrid.Margin.Right);
             GActiveProfile.Children.Clear();
             var profile = _managerService.GetActiveProfile();
-            GProfiles.AddElement(
-                element: ElementsBuilders.BuildTextBlock("Active ProfilePage:", Helpers.Colors.WHITE, FontWeights.Bold, 24),
-                column: 0,
-                row: 1);
-
             var expander = new Expander()
             {
                 VerticalAlignment = VerticalAlignment.Center,
@@ -148,14 +148,10 @@ namespace HostsManager.Application.WPF
                 });
 
             expander.Content = stackPanel;
-            GActiveProfile.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            Grid.SetColumn(expander, 0);
-            Grid.SetRow(expander, GActiveProfile.RowDefinitions.Count - 1);
-
-            GActiveProfile.Children.Add(expander);
+            GActiveProfile.AddElement(expander,0, GActiveProfile.RowDefinitions.Count - 1);
         }
 
-        private void MainWindow_OnDeactivated(object? sender, EventArgs e)
+        private void MainWindow_OnDeactivated(object sender, EventArgs e)
         {
             if (this.IsVisible)
                 this.Hide();
