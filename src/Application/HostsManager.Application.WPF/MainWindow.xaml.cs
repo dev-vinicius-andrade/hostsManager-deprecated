@@ -10,6 +10,7 @@ using HostsManager.Services.Interfaces;
 using HostsManager.Application.WPF.Builders;
 using HostsManager.Application.WPF.Configuration;
 using HostsManager.Application.WPF.Controller;
+using HostsManager.Services.Helpers;
 
 
 namespace HostsManager.Application.WPF
@@ -30,15 +31,17 @@ namespace HostsManager.Application.WPF
             _profileWindowConfigurations = profileWindowConfigurations;
             _managerService.ConfigurationsChanged += ManagerServiceOnConfigurationsChanged;
             InitializeComponent();
-            Initialize();
-        }
-
-        private void ManagerServiceOnConfigurationsChanged(object sender, EventArgs e) => Initialize();
-        public void Initialize()
-        {
             Width = _mainWindowConfigurations.Width;
             Height = _mainWindowConfigurations.Height;
             Background = new SolidColorBrush(_themeController.GetColor(_mainWindowConfigurations.BackgroundColor));
+            Initialize();
+            
+        }
+
+        private void ManagerServiceOnConfigurationsChanged(object sender, EventArgs e) => Dispatcher.Invoke(Initialize);
+        public void Initialize()
+        {
+
             LoadActiveProfile();
             LoadProfiles();
         }
@@ -60,32 +63,54 @@ namespace HostsManager.Application.WPF
                 element: ElementsBuilders.BuildTextBlock("Profiles:", Helpers.Colors.WHITE, FontWeights.Bold, 24),
                 column: 0,
                 row: 1);
-            foreach (var profile in profiles)
-            {
-                var expander = ElementsBuilders.BuildExpander(width: GProfiles.Width,
-                    element: ElementsBuilders.BuildTextBlock(profile.Key, Helpers.Colors.WHITE, FontWeights.SemiBold, 16));
-                var dockPanel = new DockPanel { FlowDirection = FlowDirection.LeftToRight, HorizontalAlignment = HorizontalAlignment.Left, Width = expander.Width};
-                var editButton = new Button { Tag = profile , Width = expander.Width/2, HorizontalAlignment = HorizontalAlignment.Left};
-                var activateButton = new Button { Tag = profile, Width = expander.Width / 2, HorizontalAlignment = HorizontalAlignment.Left };
+            foreach (var profile in profiles.Where(p=>!p.Key.Equals(Constants.DefaultProfileName)))
+                LoadUserProfiles(profile);
 
-                editButton.Content = new TextBlock { Text = "Edit" ,};
-                editButton.Click += EditButtonOnClick;
-                activateButton.Click += ActivateButton_Click;
-                activateButton.Content = new TextBlock { Text = "Activate" };
-                dockPanel.Children.Add(editButton);
-                dockPanel.Children.Add(activateButton);
 
-                expander.Content = dockPanel;
-                GProfiles.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                GProfiles.AddElement(expander, 0, GProfiles.RowDefinitions.Count - 1);
-            }
+            LoadDefaultProfile(profiles.FirstOrDefault(p => p.Key.Equals(Constants.DefaultProfileName)));
 
+        }
+
+        private void LoadDefaultProfile(KeyValuePair<string, Profile> profile)
+        {
+            var expander = ElementsBuilders.BuildExpander(width: GProfiles.Width,
+                element: ElementsBuilders.BuildTextBlock(profile.Key, Helpers.Colors.WHITE, FontWeights.SemiBold, 16));
+            var dockPanel = new DockPanel { FlowDirection = FlowDirection.LeftToRight, HorizontalAlignment = HorizontalAlignment.Left, Width = expander.Width };
+            var activateButton = new Button { Tag = profile, Width = expander.Width, HorizontalAlignment = HorizontalAlignment.Left };
+            activateButton.Click += ActivateButton_Click;
+            activateButton.Content = new TextBlock { Text = "Activate" };
+            
+            dockPanel.Children.Add(activateButton);
+
+            expander.Content = dockPanel;
+            GProfiles.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            GProfiles.AddElement(expander, 0, GProfiles.RowDefinitions.Count - 1);
+        }
+
+        private void LoadUserProfiles(KeyValuePair<string,Profile> profile)
+        {
+            var expander = ElementsBuilders.BuildExpander(width: GProfiles.Width,
+                element: ElementsBuilders.BuildTextBlock(profile.Key, Helpers.Colors.WHITE, FontWeights.SemiBold, 16));
+            var dockPanel = new DockPanel { FlowDirection = FlowDirection.LeftToRight, HorizontalAlignment = HorizontalAlignment.Left, Width = expander.Width };
+            var editButton = new Button { Tag = profile, Width = expander.Width / 2, HorizontalAlignment = HorizontalAlignment.Left };
+            var activateButton = new Button { Tag = profile, Width = expander.Width / 2, HorizontalAlignment = HorizontalAlignment.Left };
+
+            editButton.Content = new TextBlock { Text = "Edit" };
+            editButton.Click += EditButtonOnClick;
+            activateButton.Click += ActivateButton_Click;
+            activateButton.Content = new TextBlock { Text = "Activate" };
+            dockPanel.Children.Add(editButton);
+            dockPanel.Children.Add(activateButton);
+
+            expander.Content = dockPanel;
+            GProfiles.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            GProfiles.AddElement(expander, 0, GProfiles.RowDefinitions.Count - 1);
         }
         private void EditButtonOnClick(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender;
             var profile = (KeyValuePair<string, Profile>)button.Tag;
-            var profileWindow = new ProfileWindow(_managerService, profile, _profileWindowConfigurations, _themeController);
+            var profileWindow = new ProfileWindow(_managerService, profile, _profileWindowConfigurations, _themeController){Topmost = true};
             this.Hide();
             profileWindow.ShowDialog();
             this.Show();

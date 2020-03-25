@@ -1,6 +1,6 @@
 ﻿namespace HostsManager.Application.WPF.Configuration
 {
-    public class HeaderConfiguration
+    public class LabelConfiguration
     {
         public int Height { get; set; }
         public int FontSize { get; set; }

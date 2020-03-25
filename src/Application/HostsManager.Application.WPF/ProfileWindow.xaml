@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="ProfileWindow" Background="Black"
          BorderThickness="0.5" BorderBrush="#cccccc"
-        WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="Manual" ShowInTaskbar="False">
+        WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
     <Grid Name="GProfile">
 
     </Grid>

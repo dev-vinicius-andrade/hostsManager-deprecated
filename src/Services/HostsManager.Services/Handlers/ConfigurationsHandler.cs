@@ -22,7 +22,7 @@ namespace HostsManager.Services.Handlers
         }
 
         private string DefaultFileName => string.Format(_variableFilename, string.Empty);
-        private string BackupFileName => string.Format(_variableFilename, $"_BACKUP_{DateTime.Now:yyyy-MM-dd}");
+        private string BackupFileName => string.Format(_variableFilename, $"_BACKUP_{DateTime.Now:yyyy-MM-dd_HHmmss}");
         private IConfiguration InitializeConfiguration(IConfiguration configuration = null)
         {
             var builder = new ConfigurationBuilder();
@@ -40,7 +40,7 @@ namespace HostsManager.Services.Handlers
 
 
 
-        private void ResetConfigurations()
+        public void ResetConfigurations()
         {
             var backupFilePath = $"{_configurationFileFolder}\\{BackupFileName}";
             if (!File.Exists(backupFilePath))
@@ -55,6 +55,11 @@ namespace HostsManager.Services.Handlers
             if (!File.Exists(versionPath))
                 File.Move(_configurationFilePath, versionPath);
             File.WriteAllText(_configurationFilePath, JsonSerializer.Serialize(hostsConfigurations));
+        }
+
+        public string GetConfigurationsFileFolder()
+        {
+            return _configurationFileFolder;
         }
     }
 

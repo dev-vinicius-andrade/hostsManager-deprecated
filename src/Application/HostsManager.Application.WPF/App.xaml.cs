@@ -19,7 +19,7 @@ namespace HostsManager.Application.WPF
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
             ServiceProvider = serviceCollection.BuildServiceProvider();
-            _iconTrayController = new IconTrayController(this);
+            _iconTrayController = ServiceProvider.GetRequiredService<IconTrayController>();
         }
         
         public IServiceProvider ServiceProvider { get; private set; }
@@ -27,11 +27,14 @@ namespace HostsManager.Application.WPF
         {
             var configuration =  services.AddManagerService();
             var uiConfigurations = configuration.Get<UiConfigurations>();
+            services.AddSingleton(uiConfigurations);
             services.AddSingleton(uiConfigurations.ThemeConfiguration);
             services.AddSingleton(uiConfigurations.MainWindowConfigurations);
             services.AddSingleton(uiConfigurations.ProfileWindowConfigurations);
             services.AddSingleton<ThemeController>();
             services.AddTransient<MainWindow>();
+            services.AddScoped<IDisposable>(p=>this);
+            services.AddSingleton<IconTrayController>();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "HostsManager.Application.Cli": {
+      "commandName": "Project",
+      "commandLineArgs": "profiles list"
+    }
+  }
+}

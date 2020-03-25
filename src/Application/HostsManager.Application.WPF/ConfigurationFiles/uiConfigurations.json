@@ -6,17 +6,28 @@
   },
   "ProfileWindowConfigurations": {
     "Width": 300,
-    "Height": 480,
+    "Height": 555,
     "BackgroundColor": "DarkGray",
-    "HeaderConfiguration": {
+    "HeaderProfileNameLabelConfiguration": {
       "Height": 20,
       "FontSize": 16,
       "FontColor": "White"
     },
-    "TextBoxConfiguration": {
+    "HeaderProfileNameTextBoxConfiguration": {
+      "Height": 40,
+      "FontSize": 16,
+      "BackgroundColor": "Gray",
+      "FontColor": "Black"
+    },
+    "ProfileEditorTextBoxConfiguration": {
       "Height": 400,
       "FontSize": 16,
-      "BackgroundColor": "DarkGray",
+      "BackgroundColor": "Gray",
+      "FontColor": "Black"
+    },
+    "ProfileEditorLabelConfiguration": {
+      "Height": 20,
+      "FontSize": 16,
       "FontColor": "White"
     },
     "SaveButtonConfiguration": {
@@ -27,6 +38,13 @@
       "BackgroundColor": "Gray"
     },
     "CancelButtonConfiguration": {
+      "Height": 30,
+      "Width": 50,
+      "FontSize": 15,
+      "FontColor": "Black",
+      "BackgroundColor": "Gray"
+    },
+    "DeleteButtonConfiguration": {
       "Height": 30,
       "Width": 50,
       "FontSize": 15,

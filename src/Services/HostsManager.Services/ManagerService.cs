@@ -10,14 +10,19 @@ using Microsoft.Extensions.Options;
 
 namespace HostsManager.Services
 {
-   
-    public class ManagerService : IManagerService
+
+    internal class ManagerService : IManagerService
     {
+        private readonly ConfigurationsHandler _configurationsHandler;
         public event EventHandler ConfigurationsChanged;
-        private  HostsConfigurations _hostsConfigurations;
-        public ManagerService(IOptionsMonitor<HostsConfigurations> configurations)
+        private HostsConfigurations _hostsConfigurations;
+
+        public ManagerService(IOptionsMonitor<HostsConfigurations> configurations,
+            ConfigurationsHandler configurationsHandler)
         {
-            _hostsConfigurations = configurations.CurrentValue?? throw new ArgumentNullException(nameof(configurations));
+            _configurationsHandler = configurationsHandler;
+            _hostsConfigurations =
+                configurations.CurrentValue ?? throw new ArgumentNullException(nameof(configurations));
             AddDefaultConfiguration();
             PersistConfigurationsChanges(configurations);
         }
@@ -38,12 +43,15 @@ namespace HostsManager.Services
         {
             if (_hostsConfigurations == null)
                 return;
+            if(string.IsNullOrEmpty(_hostsConfigurations.HostsFileFolder))
+                return;
 
             var (key, value) = GetDefaultConfiguration();
 
-            if(!_hostsConfigurations.Profiles.ContainsKey(key))
+            if (!_hostsConfigurations.Profiles.ContainsKey(key))
                 _hostsConfigurations.Profiles.Add(key, value);
         }
+
         public KeyValuePair<string, Profile> GetActiveProfile()
         {
 
@@ -62,10 +70,7 @@ namespace HostsManager.Services
             return activesProfile.FirstOrDefault();
         }
 
-        public Dictionary<string, Profile> GetProfiles()
-        {
-            return _hostsConfigurations.Profiles;
-        } 
+        public Dictionary<string, Profile> GetProfiles() => _hostsConfigurations.Profiles;
 
         public KeyValuePair<string, Profile> GetDefaultConfiguration()
         {
@@ -94,18 +99,39 @@ namespace HostsManager.Services
             if (!_hostsConfigurations.Profiles.ContainsKey(profileName))
                 throw new Exception($"Profile name: {profileName} does not exists");
             _hostsConfigurations.Profiles[profileName] = profile;
+            _configurationsHandler.SaveConfigurations(_hostsConfigurations);
             NotifyConfigurationsChanged();
             return true;
         }
 
-        private HostHandler BuildHostService()
+        public bool AddProfile(string profileName, Profile profile)
         {
-            return new HostHandler(_hostsConfigurations.HostsFileFolder);
+            if (_hostsConfigurations.Profiles.ContainsKey(profileName))
+                throw new Exception($"Profile name: {profileName} already exists");
+            _hostsConfigurations.Profiles.Add(profileName, profile);
+            _configurationsHandler.SaveConfigurations(_hostsConfigurations);
+            NotifyConfigurationsChanged();
+            return true;
         }
 
-        private void NotifyConfigurationsChanged()
+        public bool DeleteProfile(string profileName)
         {
-            if (ConfigurationsChanged != null) ConfigurationsChanged.Invoke(this, null);
+            if (!_hostsConfigurations.Profiles.ContainsKey(profileName))
+                throw new Exception($"Profile name: {profileName} does not exists");
+            var result = _hostsConfigurations.Profiles.Remove(profileName);
+            _configurationsHandler.SaveConfigurations(_hostsConfigurations);
+            NotifyConfigurationsChanged();
+            return result;
+        }
+
+        public string GetConfigurationsFolder() => _configurationsHandler.GetConfigurationsFileFolder();
+        private HostHandler BuildHostService() => new HostHandler(_hostsConfigurations.HostsFileFolder);
+        public void NotifyConfigurationsChanged() => ConfigurationsChanged?.Invoke(this, null);
+
+        public void ResetConfigurations()
+        {
+            _configurationsHandler.ResetConfigurations();
+            NotifyConfigurationsChanged();
         }
     }
 }

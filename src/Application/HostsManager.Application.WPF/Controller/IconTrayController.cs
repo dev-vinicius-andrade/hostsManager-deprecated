@@ -2,7 +2,9 @@
 using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
+using HostsManager.Application.WPF.Configuration;
 using HostsManager.Application.WPF.Helpers;
+using HostsManager.Services.Interfaces;
 using NotifyIcon = System.Windows.Forms.NotifyIcon;
 
 namespace HostsManager.Application.WPF.Controller
@@ -13,11 +15,11 @@ namespace HostsManager.Application.WPF.Controller
         private readonly NotifyIcon _notifyIcon;
         private readonly ContextMenuController _contextMenuController;
 
-        public IconTrayController(IDisposable parent)
+        public IconTrayController(IDisposable parent, IManagerService managerService, UiConfigurations uiConfigurations, ThemeController themeController)
         {
             _parent = parent;
             _notifyIcon = new NotifyIcon {Icon = new Icon(Assets.GetIconImageStream())};
-            _contextMenuController=new ContextMenuController(this);
+            _contextMenuController=new ContextMenuController(this,managerService,uiConfigurations,themeController);
         }
       
         public void Configure(Window window)
@@ -60,6 +62,7 @@ namespace HostsManager.Application.WPF.Controller
         {
             window.Left = Screen.PrimaryScreen.WorkingArea.Right - window.Width;
             window.Top = Screen.PrimaryScreen.WorkingArea.Bottom - window.Height;
+            window.Topmost = true;
         }
 
    

@@ -12,5 +12,10 @@ namespace HostsManager.Services.Interfaces
         KeyValuePair<string, Profile> GetDefaultConfiguration();
         void ActivateProfile(string profileName);
         bool SaveProfile(string profileName, Profile profile);
+        bool AddProfile(string profileName, Profile profile);
+        bool DeleteProfile(string profileName);
+        string GetConfigurationsFolder();
+        void NotifyConfigurationsChanged();
+        void ResetConfigurations();
     }
 }
